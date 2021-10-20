@@ -13,6 +13,8 @@ namespace CoreMVCIntro_1.Models.Entities
 
         //Relational Properties
         public virtual List<Order> Orders { get; set; }
+        public virtual AppUserProfile Profile { get; set; }
+
 
     }
 }
