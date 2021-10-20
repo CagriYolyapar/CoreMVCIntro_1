@@ -1,6 +1,8 @@
+﻿using CoreMVCIntro_1.Models.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,18 @@ namespace CoreMVCIntro_1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //Hangi servisin eklenecegini belirliyorsunuz... Bazı servisler eklendiklerinde otomatik olarak kullanımı alınırken bazı servisleri de ekledikten sonra alttaki Configure metodunda özellikle kullanacagınızı belirtmeniz gerkeiyor...
+
+            //Burada standart bir Sql baglantısı belirtmek istiyorsanız(sınıf icerisinde optionsBuilder'in belirtilmesindense bu tercih edilir) burada belirlemelisiniz...
+
+            //Pool kullanmak bir Singleton Pattern görevi görür...
+            services.AddDbContextPool<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyConnection")).UseLazyLoadingProxies()); //böylece baglantı ayarlarını burada belirlemiş olduk...
+
+            //Yukarıdaki ifadede dikkat ederseniz UseLazyLoadingProxies kullanılmıstır. Bu durum, .Net Core'daki Lazy Loading'in sürekli tetiklenebilmesi adına environment'inizi garanti altına almanızı saglar...
+
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +58,9 @@ namespace CoreMVCIntro_1
 
             app.UseRouting();
 
+          
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
