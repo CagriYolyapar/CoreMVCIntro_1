@@ -12,6 +12,16 @@ namespace CoreMVCIntro_1.Models.Context
 
     public class MyContext:DbContext
     {
+        //Dependency Injection yapısı Core platformunuzun arkasında otomatik olarak entegre gelir...Dolayısıyla siz bir veritabanı sınıfınızın constructor'ina parametre olarak bir DbContextOptions<> tipinde bir yapı verirseniz bu parametreye argüman DI sayesinde Startup'tan gönderilir....
+
+
+        //public MyContext(DbContextOptionsBuilder options) 
+        //{
+        //    options.UseSqlServer(connectionString: "server=.;database=CoreDB;uid=sa;pwd=123");
+        //}
+
+
+
 
         public MyContext(DbContextOptions<MyContext> options) :base(options)
         {
@@ -28,6 +38,8 @@ namespace CoreMVCIntro_1.Models.Context
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new ProfileConfiguration());
         }
+
+        //.Net Core üzerinden migrate yapmak istediginiz takdirde add-migration <isim> ve sonrasında update-database demeniz gerekir...
 
         public DbSet<AppUser> AppUser { get; set; }
         public DbSet<Category> Categories { get; set; }
